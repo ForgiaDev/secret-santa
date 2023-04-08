@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
 
@@ -36,7 +36,7 @@ const Home: NextPage = () => {
   );
 };
 
-const GroupView = () => {
+export const GroupView = () => {
   const { data: groups, isLoading, isError } = api.groups.getAll.useQuery();
 
   if (isLoading) {
@@ -79,7 +79,7 @@ const LoginView = () => {
 
       <button
         className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-        onClick={() => void signIn("discord")}
+        onClick={() => void signIn("discord", { callbackUrl: "/dashboard" })}
       >
         Sign in with Discord
       </button>

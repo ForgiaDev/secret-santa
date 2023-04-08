@@ -19,6 +19,7 @@ model Group {
     description String?
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
+    status      GroupStatus @default(PRE_DRAW)
 
     admin   User   @relation(fields: [adminId], references: [id], name: "group_admin")
     adminId String
@@ -83,4 +84,9 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+enum GroupStatus {
+  PRE_DRAW
+  POST_DRAW
 }
