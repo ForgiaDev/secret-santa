@@ -41,7 +41,13 @@ const GroupPage: NextPage<{ id: string }> = ({ id }) => {
 
         return {
           ...group,
-          messages: [...group.messages, data],
+          messages: [
+            ...group.messages,
+            {
+              ...data,
+              createdAt: new Date(data.createdAt),
+            },
+          ],
         };
       });
     });
@@ -75,12 +81,10 @@ const GroupPage: NextPage<{ id: string }> = ({ id }) => {
         <div className="flex w-1/2 flex-col gap-4">
           <NewMessageForm groupId={id} />
 
-          <div className="flex flex-col gap-4">
-            {group.messages
-              .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-              .map((message) => (
-                <Message key={message.id} message={message} />
-              ))}
+          <div className="flex flex-col-reverse gap-4">
+            {group.messages.map((message) => (
+              <Message key={message.id} message={message} />
+            ))}
           </div>
         </div>
       </div>
