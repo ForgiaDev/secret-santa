@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { pusher } from "~/utils/pusher";
 
 export const groupsRouter = createTRPCRouter({
   // Obtain all groups that the user is a member of
@@ -24,7 +25,7 @@ export const groupsRouter = createTRPCRouter({
           id: input.id,
           users: { some: { id: ctx.session.user.id } },
         },
-        include: { users: true, invitations: true },
+        include: { users: true, invitations: true, messages: true },
       });
     }),
 
@@ -45,5 +46,35 @@ export const groupsRouter = createTRPCRouter({
           adminId: ctx.session.user.id,
         },
       });
+    }),
+
+  postMessage: protectedProcedure
+    .input(
+      z.object({
+        groupId: z.string(),
+        content: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const group = await ctx.prisma.group.findFirst({
+        where: {
+          id: input.groupId,
+          users: { some: { id: ctx.session.user.id } },
+        },
+      });
+
+      if (!group) throw new Error("Group not found");
+
+      const message = await ctx.prisma.message.create({
+        data: {
+          content: input.content,
+          authorId: ctx.session.user.id,
+          groupId: input.groupId,
+        },
+      });
+
+      await pusher.trigger(`group-${input.groupId}`, "new-message", message);
+
+      return true;
     }),
 });

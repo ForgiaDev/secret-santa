@@ -14,11 +14,11 @@ generator client {
 // Collection of users for a specific Secret Santa event
 // TODO: decide if we want to allow multiple events per group or just recreate the group every year
 model Group {
-    id          String   @id @default(cuid())
+    id          String      @id @default(cuid())
     name        String
     description String?
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
     status      GroupStatus @default(PRE_DRAW)
 
     admin   User   @relation(fields: [adminId], references: [id], name: "group_admin")
@@ -26,6 +26,7 @@ model Group {
 
     users       User[]
     invitations Invitation[]
+    messages    Message[]
 }
 
 model Invitation {
@@ -75,7 +76,21 @@ model User {
     sessions      Session[]
 
     groups             Group[]
-    administeredGroups Group[] @relation("group_admin")
+    administeredGroups Group[]   @relation("group_admin")
+    Message            Message[]
+}
+
+model Message {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    content   String
+
+    group   Group  @relation(fields: [groupId], references: [id])
+    groupId String
+
+    author   User   @relation(fields: [authorId], references: [id])
+    authorId String
 }
 
 model VerificationToken {
@@ -87,6 +102,6 @@ model VerificationToken {
 }
 
 enum GroupStatus {
-  PRE_DRAW
-  POST_DRAW
+    PRE_DRAW
+    POST_DRAW
 }
