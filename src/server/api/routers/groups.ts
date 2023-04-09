@@ -25,7 +25,13 @@ export const groupsRouter = createTRPCRouter({
           id: input.id,
           users: { some: { id: ctx.session.user.id } },
         },
-        include: { users: true, invitations: true, messages: true },
+        include: {
+          users: true,
+          invitations: true,
+          messages: {
+            include: { author: true },
+          },
+        },
       });
     }),
 
@@ -71,6 +77,7 @@ export const groupsRouter = createTRPCRouter({
           authorId: ctx.session.user.id,
           groupId: input.groupId,
         },
+        include: { author: true },
       });
 
       await pusher.trigger(`group-${input.groupId}`, "new-message", message);
