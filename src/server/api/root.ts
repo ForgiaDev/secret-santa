@@ -1,6 +1,5 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { groupsRouter } from "~/server/api/routers/groups";
-import { invitationsRouter } from "./routers/invitations";
+import { exampleRouter } from "~/server/api/routers/example";
 
 /**
  * This is the primary router for your server.
@@ -8,8 +7,7 @@ import { invitationsRouter } from "./routers/invitations";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  groups: groupsRouter,
-  invitations: invitationsRouter,
+  example: exampleRouter,
 });
 
 // export type definition of API
