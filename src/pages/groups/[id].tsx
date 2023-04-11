@@ -1,62 +1,25 @@
-import { type NextPageContext, type NextPage } from "next";
-import Head from "next/head";
-import React from "react";
-import { RouterOutputs, api } from "~/utils/api";
-import Pusher from "pusher-js";
-import { env } from "~/env.mjs";
 import { Message, User } from "@prisma/client";
-import { MessageChannel } from "worker_threads";
-import Image from "next/image";
+import { type NextPage, type NextPageContext } from "next";
+import React from "react";
+import { FloatingChat } from "~/components/chat/FloatingChat";
+import { api } from "~/utils/api";
+import { useGroupData } from "~/utils/useGroupData";
 
-const pusher = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
-  cluster: "eu",
-});
-
-const GroupPage: NextPage<{ id: string }> = ({ id }) => {
+const GroupPage: NextPage<{ groupId: string }> = ({ groupId }) => {
   const {
     data: group,
     isLoading: isGroupLoading,
     isError: isGroupError,
-    refetch,
-  } = api.groups.get.useQuery({ id });
+    refetch: refetchGroup,
+  } = useGroupData(groupId);
 
-  const crateInvitationLink = api.invitations.create.useMutation();
-  const apiContext = api.useContext();
+  const createInvitationLink = api.invitations.create.useMutation({
+    onSuccess: () => void refetchGroup(),
+  });
 
   const onCreateInvitationLink = () => {
-    void crateInvitationLink
-      .mutateAsync({ groupId: id })
-      .then(() => void refetch())
-      .catch((err) => {
-        console.error(err);
-      });
+    void createInvitationLink.mutateAsync({ groupId });
   };
-
-  React.useEffect(() => {
-    const channel = pusher.subscribe(`group-${id}`);
-
-    channel.bind("new-message", (data: MessageType) => {
-      apiContext.groups.get.setData({ id }, (group) => {
-        if (!group) return group;
-
-        return {
-          ...group,
-          messages: [
-            ...group.messages,
-            {
-              ...data,
-              createdAt: new Date(data.createdAt),
-            },
-          ],
-        };
-      });
-    });
-
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [id]);
 
   if (isGroupLoading) return <div>Loading...</div>;
   if (isGroupError || group === null) return <div>Error</div>;
@@ -78,8 +41,15 @@ const GroupPage: NextPage<{ id: string }> = ({ id }) => {
             2
           )}
         </pre>
-        <div className="flex w-1/2 flex-col gap-4">
-          <NewMessageForm groupId={id} />
+      </div>
+      <FloatingChat messages={group.messages} groupId={groupId} />
+    </div>
+  );
+};
+
+/**
+ * <div className="flex w-1/2 flex-col gap-4">
+          <NewMessageForm groupId={groupId} />
 
           <div className="flex flex-col-reverse gap-4">
             {group.messages.map((message) => (
@@ -87,38 +57,9 @@ const GroupPage: NextPage<{ id: string }> = ({ id }) => {
             ))}
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
+ */
 
-type MessageType = Message & { author: User };
-
-const Message = ({ message }: { message: MessageType }) => {
-  return (
-    <div className="flex gap-2">
-      {message.author.image && (
-        <div className="relative h-12 w-12 overflow-hidden rounded-full">
-          <Image
-            src={message.author.image}
-            alt={message.author.name ?? "User"}
-            fill
-          />
-        </div>
-      )}
-      <div>
-        <p className="flex gap-2 text-sm">
-          <span className="font-bold">{message.author.name}</span>·
-          <span className="text-gray-500">
-            {message.createdAt.toLocaleString()}
-            {/* TODO: use relative time */}
-          </span>
-        </p>
-        <div>{message.content}</div>
-      </div>
-    </div>
-  );
-};
+export type MessageType = Message & { author: User };
 
 const NewMessageForm = ({ groupId }: { groupId: string }) => {
   const [content, setContent] = React.useState("");
@@ -156,7 +97,7 @@ const NewMessageForm = ({ groupId }: { groupId: string }) => {
 GroupPage.getInitialProps = (ctx: NextPageContext) => {
   const id = ctx.query.id as string;
 
-  return { id };
+  return { groupId: id };
 };
 
 export default GroupPage;
