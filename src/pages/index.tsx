@@ -1,5 +1,5 @@
-import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { type GetServerSideProps, type NextPage } from "next";
+import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -88,3 +88,21 @@ const LoginView = () => {
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  // If user is already logged in, redirect to the dashboard
+  if (session) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session }, // Pass the session object to the component
+  };
+};

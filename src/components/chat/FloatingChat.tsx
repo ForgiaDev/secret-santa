@@ -3,7 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { MessageType } from "~/pages/groups/[id]";
+import { type MessageType } from "~/pages/groups/[id]";
 import { api } from "~/utils/api";
 
 export const FloatingChat = ({
@@ -102,7 +102,7 @@ const Message = ({ message }: { message: MessageType }) => {
         </>
       )}
       <div className="chat-header pb-0.5">
-        {!isUser && `${message.author.name} · `}
+        {!isUser && `${message.author.name ?? ""} · `}
         <time className="text-xs opacity-50">
           {formatDistanceToNow(message.createdAt)} ago
         </time>
@@ -121,7 +121,7 @@ const MessageForm = ({ groupId }: { groupId: string }) => {
     e.preventDefault();
     if (!content) return;
 
-    createMessage.mutateAsync({ groupId, content });
+    void createMessage.mutateAsync({ groupId, content });
     setContent("");
   };
 

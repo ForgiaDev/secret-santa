@@ -1,4 +1,4 @@
-import { Message, User } from "@prisma/client";
+import { type Message, type User } from "@prisma/client";
 import { api } from "~/utils/api";
 import { useSocket } from "~/utils/useSocketHook";
 

@@ -15,6 +15,7 @@ export const useSocket = <T>({
   eventName: string;
   channelName: string;
   callback: (data: T) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context?: any;
 }) => {
   return useEffect(() => {
