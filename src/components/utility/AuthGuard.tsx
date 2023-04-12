@@ -12,7 +12,7 @@ export function AuthGuard({ children }: { children: ReactNode }) {
     }
   }, [status, router]);
 
-  /* show loading indicator while the auth provider is still initializing */
+  // show loading indicator while the auth provider is still initializing
   if (status === "loading") {
     return <h1> Loading </h1>;
   }

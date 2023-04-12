@@ -1,18 +1,25 @@
-import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { type IncomingMessage } from "http";
+import {
+  type GetServerSideProps,
+  type GetServerSidePropsContext,
+  type NextApiRequest,
+  type NextPage,
+} from "next";
+import { getServerSession } from "next-auth/next";
+import {
+  getSession,
+  signIn,
+  signOut,
+  useSession,
+  type GetSessionParams,
+} from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   const { data: session, status } = useSession();
-  const router = useRouter();
-
-  if (status === "authenticated") {
-    void router.push("/dashboard");
-  }
 
   return (
     <>
@@ -94,3 +101,22 @@ const LoginView = () => {
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const session = await getSession({ req });
+
+  // If user is already logged in, redirect to the dashboard
+  if (session) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session }, // Pass the session object to the component
+  };
+};
