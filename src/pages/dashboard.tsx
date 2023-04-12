@@ -1,13 +1,10 @@
-import { group } from "console";
-import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
 import CreateGroupButton from "~/components/buttons/CreateGroupButton";
 import GroupCard from "~/components/cards/GroupCard";
+import PrimaryLayout from "~/components/layouts/PrimaryLayout";
 import { api } from "~/utils/api";
+import { type NextPageWithLayout } from "./page";
 
-const Dashboard: NextPage = () => {
-  //const { data: session, status } = useSession();
+const Dashboard: NextPageWithLayout = () => {
   const { data: groups, isLoading, isError } = api.groups.getAll.useQuery();
   const numGroups = groups?.length ?? 0;
 
@@ -20,9 +17,10 @@ const Dashboard: NextPage = () => {
   }
 
   return (
-    <div className="h-full">
+    <>
+      {/* <Navbar /> */}
       {numGroups > 0 ? (
-        <div className="flex h-full flex-col gap-10 bg-red-100 p-16 text-3xl">
+        <div className="flex flex-col gap-10 bg-red-100 p-16 text-3xl">
           <div className="flex w-full items-center gap-10 bg-purple-100 font-bold text-black">
             <h2>You have {numGroups} groups</h2>
             <CreateGroupButton />
@@ -32,7 +30,7 @@ const Dashboard: NextPage = () => {
       ) : (
         <div className="">You have no groups yet.</div>
       )}
-    </div>
+    </>
   );
 };
 
@@ -61,3 +59,9 @@ const GroupView = () => {
     </div>
   );
 };
+
+Dashboard.getLayout = (page) => {
+  return <PrimaryLayout groupPage={true}>{page}</PrimaryLayout>;
+};
+
+Dashboard.requireAuth = true;

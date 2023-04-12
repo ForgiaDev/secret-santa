@@ -2,11 +2,17 @@ import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   const { data: session, status } = useSession();
+  const router = useRouter();
+
+  if (status === "authenticated") {
+    void router.push("/dashboard");
+  }
 
   return (
     <>
