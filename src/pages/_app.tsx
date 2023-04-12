@@ -6,7 +6,7 @@ import type { ReactElement, ReactNode } from "react";
 
 import { AuthGuard } from "~/components/utility/AuthGuard";
 import { api } from "~/utils/api";
-import "../styles/globals.css";
+import "~/styles/globals.css";
 
 export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
