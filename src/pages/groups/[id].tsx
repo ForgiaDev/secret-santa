@@ -1,12 +1,10 @@
-import { type NextPageContext, type NextPage } from "next";
-import Head from "next/head";
-import React from "react";
-import { RouterOutputs, api } from "~/utils/api";
-import Pusher from "pusher-js";
-import { env } from "~/env.mjs";
-import { Message, User } from "@prisma/client";
-import { MessageChannel } from "worker_threads";
+import { Message, type User } from "@prisma/client";
+import { type NextPage, type NextPageContext } from "next";
 import Image from "next/image";
+import Pusher from "pusher-js";
+import React from "react";
+import { env } from "~/env.mjs";
+import { api } from "~/utils/api";
 
 const pusher = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
   cluster: "eu",

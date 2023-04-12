@@ -1,18 +1,5 @@
-import { type IncomingMessage } from "http";
-import {
-  type GetServerSideProps,
-  type GetServerSidePropsContext,
-  type NextApiRequest,
-  type NextPage,
-} from "next";
-import { getServerSession } from "next-auth/next";
-import {
-  getSession,
-  signIn,
-  signOut,
-  useSession,
-  type GetSessionParams,
-} from "next-auth/react";
+import { type GetServerSideProps, type NextPage } from "next";
+import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -103,7 +90,6 @@ const LoginView = () => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const session = await getSession({ req });
 
   // If user is already logged in, redirect to the dashboard
