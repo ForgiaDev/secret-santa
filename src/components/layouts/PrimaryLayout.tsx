@@ -15,7 +15,7 @@ const PrimaryLayout: React.FC<PrimaryLayout> = ({
 }) => {
   return (
     <>
-      <div {...divProps} className={`flex min-h-screen flex-col`}>
+      <div {...divProps} className="flex min-h-screen flex-col">
         <Navbar groupPage={!!groupPage} hasGraph={!!hasGraph} />
         <main className="px-5">{children}</main>
       </div>
