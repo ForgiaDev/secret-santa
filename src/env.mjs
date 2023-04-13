@@ -21,6 +21,8 @@ const server = z.object({
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
   PUSHER_APP_ID: z.string(),
   PUSHER_SECRET: z.string(),
   PUSHER_CLUSTER: z.string(),
@@ -49,6 +51,8 @@ const processEnv = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   PUSHER_APP_ID: process.env.PUSHER_APP_ID,
   PUSHER_SECRET: process.env.PUSHER_SECRET,
   PUSHER_CLUSTER: process.env.PUSHER_CLUSTER,
