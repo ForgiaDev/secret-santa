@@ -1,9 +1,16 @@
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Navbar: React.FC<{ groupPage: boolean; hasGraph?: boolean }> = ({
   groupPage = false,
   hasGraph,
 }) => {
+  const { data } = useSession();
+  console.log(data);
+  const router = useRouter();
+
   return (
     <div className="flex w-full justify-center py-2">
       <div className="navbar w-[99%] rounded-lg bg-base-200">
@@ -60,7 +67,12 @@ const Navbar: React.FC<{ groupPage: boolean; hasGraph?: boolean }> = ({
               </li>
             </ul>
           </div>
-          <a className="btn-ghost btn text-xl normal-case">Santafy</a>
+          <Link
+            href={"/dashboard"}
+            className="btn-ghost btn text-xl normal-case"
+          >
+            Santafy
+          </Link>
         </div>
 
         {/* Tabs */}
@@ -69,32 +81,30 @@ const Navbar: React.FC<{ groupPage: boolean; hasGraph?: boolean }> = ({
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">
               <li>
-                <a>General</a>
+                <Link href={router.asPath + "/../general"}>General</Link>
               </li>
               <li>
-                <a>Graph</a>
-              </li>
-              <li>
-                <a>Chat</a>
+                <Link href={router.asPath + "/../graph"}>Graph</Link>
               </li>
             </ul>
           </div>
         )}
         <div className="navbar-end">
-          <div className="dropdown-end dropdown">
+          <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
-              <div className="w-10 rounded-full bg-purple-500" />
+              {/* <div className="w-10 rounded-full bg-purple-500" /> */}
+              <Image
+                src={data?.user.image ?? ""}
+                alt="profile pic"
+                width={1000}
+                height={1000}
+                className="aspect-square w-10 rounded-full"
+              />
             </label>
             <ul
               tabIndex={0}
-              className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
+              className="dropdown-content menu rounded-box menu-compact mt-3 w-40 bg-base-100 p-2 shadow-2xl"
             >
-              <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
               <li>
                 <a>Settings</a>
               </li>

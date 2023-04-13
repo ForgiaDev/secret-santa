@@ -9,7 +9,7 @@ const GroupCard: React.FC<{
   return (
     <div className="tooltip tooltip-bottom" data-tip={group.description}>
       <Link
-        href={`/groups/${group.id}`}
+        href={`/groups/${group.id}/general`}
         className="flex items-center gap-3 rounded border-2 border-black bg-white px-4 py-2 font-bold text-black hover:bg-blue-100"
       >
         {/* Group pic */}
