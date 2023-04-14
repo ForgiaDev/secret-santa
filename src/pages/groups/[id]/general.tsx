@@ -5,6 +5,7 @@ import SantaDeliveryCard from "~/components/cards/SantaDeliveryCard";
 import SantaInfoCard from "~/components/cards/SantaInfoCard";
 import { FloatingChat } from "~/components/chat/FloatingChat";
 import PrimaryLayout from "~/components/layouts/PrimaryLayout";
+import Loading from "~/components/utility/Loading";
 import { api } from "~/utils/api";
 import { useGroupData } from "~/utils/useGroupData";
 import { type NextPageWithLayout } from "../../page";
@@ -25,7 +26,7 @@ const GroupPage: NextPageWithLayout<{ groupId: string }> = ({ groupId }) => {
     void createInvitationLink.mutateAsync({ groupId });
   };
 
-  if (isGroupLoading) return <div>Loading...</div>;
+  if (isGroupLoading) return <Loading />;
   if (isGroupError || group === null) return <div>Error</div>;
 
   return (

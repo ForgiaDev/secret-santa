@@ -5,7 +5,7 @@ const RecipientDeliveryCard: React.FC = () => {
       <ul className="steps w-full">
         <li className="step-primary step">Ordered</li>
         <li className="step-primary step">Shipped</li>
-        <li className="step">Delivered</li>
+        <li className="step hover:step-primary">Delivered</li>
       </ul>
       <form
         onSubmit={() => console.log("Save estimated delivery")}

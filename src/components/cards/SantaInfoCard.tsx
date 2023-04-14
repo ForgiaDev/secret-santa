@@ -6,6 +6,7 @@ import { useState } from "react";
 const SantaInfoCard: React.FC<{ recipient: User }> = ({ recipient }) => {
   const [hide, setHide] = useState(true);
   const { data } = useSession();
+
   return (
     <div className="flex flex-col gap-8 rounded-xl bg-base-200 p-6">
       <div className="flex justify-between">
@@ -20,16 +21,20 @@ const SantaInfoCard: React.FC<{ recipient: User }> = ({ recipient }) => {
           alt="profile pic"
           width={1000}
           height={1000}
-          className={`aspect-square w-20 overflow-hidden rounded-full ${
-            hide ? "blur-xl" : ""
+          className={`aspect-square w-20 flex-none overflow-hidden rounded-full ${
+            hide ? `blur-lg` : "animate-unblur_img"
           }`}
         />
         <div className="flex items-center gap-5">
-          <div className="flex flex-col items-end gap-2">
+          <div className="flex flex-col items-end gap-2 font-bold">
             <p>Name:</p>
             <p>Address: </p>
           </div>
-          <div className={`flex flex-col gap-2 ${hide ? "blur" : ""}`}>
+          <div
+            className={`flex flex-col gap-2 ${
+              hide ? "blur" : "animate-unblur"
+            }`}
+          >
             <p>{recipient.name}</p>
             <p>{recipient.id}</p>
           </div>
