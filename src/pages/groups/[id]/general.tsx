@@ -6,9 +6,9 @@ import SantaInfoCard from "~/components/cards/SantaInfoCard";
 import { FloatingChat } from "~/components/chat/FloatingChat";
 import PrimaryLayout from "~/components/layouts/PrimaryLayout";
 import Loading from "~/components/utility/Loading";
+import { type NextPageWithLayout } from "~/pages/page";
 import { api } from "~/utils/api";
 import { useGroupData } from "~/utils/useGroupData";
-import { type NextPageWithLayout } from "../../page";
 
 const GroupPage: NextPageWithLayout<{ groupId: string }> = ({ groupId }) => {
   const {
@@ -31,12 +31,13 @@ const GroupPage: NextPageWithLayout<{ groupId: string }> = ({ groupId }) => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-10 rounded-md bg-gradient-to-t from-purple-700 to-green-700 p-20">
-      <div className="flex w-full items-center gap-10">
+      <div className="flex w-full items-center gap-8">
         <div className="flex basis-1/2 flex-col gap-8">
           <RecipientDeliveryCard />
           <SantaDeliveryCard />
         </div>
         <div className="basis-1/2">
+          {/* TODO: obtain this from matchings */}
           <SantaInfoCard recipient={group.users[0]!} />
         </div>
       </div>

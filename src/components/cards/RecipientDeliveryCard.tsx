@@ -14,7 +14,7 @@ const RecipientDeliveryCard: React.FC = () => {
         <label className="font-semibold" htmlFor="estimated-delivery">
           Estimated delivery:
         </label>
-        <input type="date" id="estimated-delivery" />
+        <input type="date" id="estimated-delivery" className="input" />
         <button className="btn">Save</button>
       </form>
     </div>

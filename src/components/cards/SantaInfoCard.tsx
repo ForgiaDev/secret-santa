@@ -1,23 +1,25 @@
 import type { User } from "@prisma/client";
-import { useSession } from "next-auth/react";
+import clsx from "clsx";
 import Image from "next/image";
 import { useState } from "react";
 
 const SantaInfoCard: React.FC<{ recipient: User }> = ({ recipient }) => {
   const [hide, setHide] = useState(true);
-  const { data } = useSession();
 
   return (
-    <div className="flex flex-col gap-8 rounded-xl bg-base-200 p-6">
+    <div className="flex flex-col gap-12 rounded-xl bg-base-200 p-12">
       <div className="flex justify-between">
         <p className="text-3xl font-semibold">Your recipient:</p>
-        <button className="btn" onClick={() => setHide(!hide)}>
+        <button
+          className={clsx("btn w-32", { "btn-active": !hide })}
+          onClick={() => setHide(!hide)}
+        >
           {hide ? "show" : "hide"}
         </button>
       </div>
-      <div className="flex items-center gap-10 text-2xl">
+      <div className="flex items-center gap-8 text-2xl">
         <Image
-          src={data?.user.image ?? ""}
+          src={recipient.image ?? ""}
           alt="profile pic"
           width={1000}
           height={1000}
