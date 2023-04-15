@@ -61,7 +61,7 @@ const GroupView = () => {
 };
 
 Dashboard.getLayout = (page) => {
-  return <PrimaryLayout groupPage={true}>{page}</PrimaryLayout>;
+  return <PrimaryLayout>{page}</PrimaryLayout>;
 };
 
 Dashboard.requireAuth = true;

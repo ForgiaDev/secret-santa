@@ -3,7 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { type MessageType } from "~/pages/groups/[id]";
+import { type MessageType } from "~/pages/groups/[id]/general";
 import { api } from "~/utils/api";
 
 export const FloatingChat = ({
