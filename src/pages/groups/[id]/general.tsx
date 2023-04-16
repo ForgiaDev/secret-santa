@@ -1,5 +1,6 @@
 import type { Message, User } from "@prisma/client";
 import { type NextPageContext } from "next";
+import Image from "next/image";
 import RecipientDeliveryCard from "~/components/cards/RecipientDeliveryCard";
 import SantaDeliveryCard from "~/components/cards/SantaDeliveryCard";
 import SantaInfoCard from "~/components/cards/SantaInfoCard";
@@ -46,13 +47,21 @@ const GroupPage: NextPageWithLayout<{ groupId: string }> = ({ groupId }) => {
           {group.users.length}{" "}
           {group.users.length > 1 ? "participants" : "participant"}
         </p>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           {group.users.map((user, i) => (
             <div
               className="flex items-center gap-2 rounded-md bg-base-300 px-4 py-2 capitalize"
+              title={JSON.stringify(user, null, 2)}
               key={i}
             >
-              <div className="aspect-square w-10 rounded-full bg-primary"></div>
+              <div className="avatar relative h-10 w-10">
+                <Image
+                  src={user.image ?? ""}
+                  alt={user.name ?? ""}
+                  fill
+                  className="rounded-full"
+                />
+              </div>
               <p className="text-lg">{user.name}</p>
             </div>
           ))}

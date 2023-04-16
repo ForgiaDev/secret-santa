@@ -35,7 +35,7 @@ model Invitation {
     updatedAt DateTime  @updatedAt
     expiresAt DateTime?
 
-    group   Group  @relation(fields: [groupId], references: [id])
+    group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
     groupId String
 }
 
