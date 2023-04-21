@@ -21,7 +21,8 @@ model Group {
     updatedAt   DateTime    @updatedAt
     status      GroupStatus @default(PRE_DRAW)
 
-    admin   User   @relation(fields: [adminId], references: [id], name: "group_admin")
+    // TODO: decide what we want to do if the admin leaves the group or deletes their account
+    admin   User   @relation(fields: [adminId], references: [id], name: "group_admin", onDelete: Cascade)
     adminId String
 
     users       User[]
@@ -35,7 +36,7 @@ model Invitation {
     updatedAt DateTime  @updatedAt
     expiresAt DateTime?
 
-    group   Group  @relation(fields: [groupId], references: [id])
+    group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
     groupId String
 }
 
@@ -86,10 +87,10 @@ model Message {
     updatedAt DateTime @updatedAt
     content   String
 
-    group   Group  @relation(fields: [groupId], references: [id])
+    group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
     groupId String
 
-    author   User   @relation(fields: [authorId], references: [id])
+    author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId String
 }
 

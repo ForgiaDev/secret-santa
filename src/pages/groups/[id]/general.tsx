@@ -10,6 +10,8 @@ import { type NextPageWithLayout } from "~/pages/page";
 import { api } from "~/utils/api";
 import { useGroupData } from "~/utils/useGroupData";
 
+import Image from "next/image";
+
 const GroupPage: NextPageWithLayout<{ groupId: string }> = ({ groupId }) => {
   const {
     data: group,
@@ -46,13 +48,20 @@ const GroupPage: NextPageWithLayout<{ groupId: string }> = ({ groupId }) => {
           {group.users.length}{" "}
           {group.users.length > 1 ? "participants" : "participant"}
         </p>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           {group.users.map((user, i) => (
             <div
-              className="flex items-center gap-2 rounded-md bg-base-300 px-4 py-2 capitalize"
+              className="flex items-center gap-2 rounded-md border border-base-100 bg-base-300 px-4 py-2"
               key={i}
             >
-              <div className="aspect-square w-10 rounded-full bg-primary"></div>
+              <div className="relative aspect-square w-10 rounded-full border border-base-100 bg-base-100">
+                <Image
+                  className="rounded-full"
+                  src={user.image ?? ""}
+                  alt={`${user.name ?? ""}'s avatar`}
+                  fill
+                />
+              </div>
               <p className="text-lg">{user.name}</p>
             </div>
           ))}
