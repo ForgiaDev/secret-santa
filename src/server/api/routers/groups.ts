@@ -41,6 +41,7 @@ export const groupsRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         description: z.string().optional(),
+        image: z.string().optional(),
       })
     )
     .mutation(({ input, ctx }) => {
@@ -48,6 +49,7 @@ export const groupsRouter = createTRPCRouter({
         data: {
           name: input.name,
           description: input.description,
+          image: input.image,
           users: { connect: { id: ctx.session.user.id } },
           adminId: ctx.session.user.id,
         },
