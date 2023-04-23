@@ -1,6 +1,7 @@
 import CreateGroupButton from "~/components/buttons/CreateGroupButton";
 import GroupCard from "~/components/cards/GroupCard";
 import PrimaryLayout from "~/components/layouts/PrimaryLayout";
+import Loading from "~/components/utility/Loading";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./page";
 
@@ -9,7 +10,7 @@ const Dashboard: NextPageWithLayout = () => {
   const numGroups = groups?.length ?? 0;
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (isError) {
