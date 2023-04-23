@@ -1,6 +1,7 @@
 import CreateGroupButton from "~/components/buttons/CreateGroupButton";
 import GroupCard from "~/components/cards/GroupCard";
 import PrimaryLayout from "~/components/layouts/PrimaryLayout";
+import Loading from "~/components/utility/Loading";
 import { api } from "~/utils/api";
 import { type NextPageWithLayout } from "./page";
 
@@ -9,7 +10,7 @@ const Dashboard: NextPageWithLayout = () => {
   const numGroups = groups?.length ?? 0;
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (isError) {
@@ -20,9 +21,9 @@ const Dashboard: NextPageWithLayout = () => {
     <>
       {/* <Navbar /> */}
       {numGroups > 0 ? (
-        <div className="flex flex-col gap-10 bg-red-100 p-16 text-3xl">
-          <div className="flex w-full items-center gap-10 bg-purple-100 font-bold text-black">
-            <h2>You have {numGroups} groups</h2>
+        <div className="flex flex-col gap-10 bg-base-200 p-16 text-3xl">
+          <div className="flex w-full items-center justify-between gap-10 font-bold text-white">
+            <h2>You have {numGroups} groups :</h2>
             <CreateGroupButton />
           </div>
           <GroupView />
@@ -48,15 +49,13 @@ const GroupView = () => {
   }
 
   return (
-    <div className="flex flex-col gap-8">
-      <ul className="flex flex-row gap-4">
-        {groups.map((group) => (
-          <li key={group.id}>
-            <GroupCard group={group} />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="flex flex-col gap-8">
+      {groups.map((group) => (
+        <li key={group.id}>
+          <GroupCard group={group} />
+        </li>
+      ))}
+    </ul>
   );
 };
 

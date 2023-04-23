@@ -1,11 +1,9 @@
 import { type GetServerSideProps, type NextPage } from "next";
-import { getSession, signIn, signOut, useSession } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
-
-import { api } from "~/utils/api";
+import { FaDiscord } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 const Home: NextPage = () => {
   const { error } = useRouter().query;
@@ -20,25 +18,36 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center gap-8">
-        <h2 className="text-3xl">
-          Sign in to create a Secret Santa group or join an existing one.
-        </h2>
-        <div className="flex flex-row items-center justify-center gap-4">
-          <button
-            className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-            onClick={() => void signIn("discord")}
-          >
-            Sign in with Discord
-          </button>
-          <button
-            className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-            onClick={() => void signIn("google")}
-          >
-            Sign in with Google
-          </button>
+      <main className="flex min-h-screen">
+        <div className="flex w-1/2 items-center justify-center px-10">
+          <div className="flex w-full flex-col gap-8 rounded-lg bg-gradient-to-t from-base-100 to-base-300 p-20">
+            <h1 className="hero text-4xl font-bold normal-case">
+              Welcome back to Santafy!
+            </h1>
+            <h2 className="hero-content text-center text-xl">
+              Sign in to create a Secret Santa group
+              <br /> or join an existing one.
+            </h2>
+            <div className="flex flex-row items-center justify-center gap-8">
+              <button
+                className="flex items-center gap-2 rounded bg-[#738ADB] px-4 py-2 font-medium text-white"
+                onClick={() => void signIn("discord")}
+              >
+                <FaDiscord size={20} />
+                <p>Sign in with Discord</p>
+              </button>
+              <button
+                className="flex items-center gap-2 rounded bg-white px-4 py-2 font-medium text-black"
+                onClick={() => void signIn("google")}
+              >
+                <FcGoogle size={20} />
+                <p>Sign in with Google</p>
+              </button>
+            </div>
+            {error && <SignInError error={error as keyof typeof errors} />}
+          </div>
         </div>
-        {error && <SignInError error={error as keyof typeof errors} />}
+        <div className="basis-1/2 bg-gradient-to-br from-purple-500 to-purple-800" />
       </main>
     </>
   );

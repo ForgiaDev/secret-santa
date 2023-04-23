@@ -17,6 +17,7 @@ model Group {
     id          String      @id @default(cuid())
     name        String
     description String?
+    image       String?
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
     status      GroupStatus @default(PRE_DRAW)
